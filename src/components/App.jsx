@@ -13,13 +13,21 @@ export class App extends Component {
     number: '',
   };
 
-  handleNameChange = e => {
-    this.setState({ name: e.target.value });
+  updateState = (fieldName, value) => {
+    this.setState({ [fieldName]: value });
   };
 
-  handlePhoneChange = e => {
-    this.setState({ number: e.target.value });
+  handleAction = (type, e) => {
+    this.updateState(type, e.target.value);
   };
+
+  // handleNameChange = e => {
+  //   this.setState({ name: e.target.value });
+  // };
+
+  // handlePhoneChange = e => {
+  //   this.setState({ number: e.target.value });
+  // };
 
   handleAddContact = () => {
     const { contacts, name, number } = this.state;
@@ -44,15 +52,15 @@ export class App extends Component {
       number: number.trim(),
     };
 
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, newContact],
+    this.setState({
+      contacts: [...contacts, newContact],
       name: '',
       number: '',
-    }));
+    });
   };
 
-  handleFilter = e => {
-    this.setState({ filter: e.target.value });
+  handleFilter = (type, e) => {
+    this.updateState(type, e.target.value);
   };
 
   handleDeleteContact = id => {
@@ -88,16 +96,16 @@ export class App extends Component {
         <ContactForm
           name={name}
           number={number}
-          handleNameChange={this.handleNameChange}
+          handleNameChange={(e) => this.handleAction('name', e)}
           handleAddContact={this.handleAddContact}
-          handlePhoneChange={this.handlePhoneChange}
-        ></ContactForm>
+          handlePhoneChange={(e) => this.handleAction('number', e)}
+        />
         <h2>Contacts</h2>
-        <Filter filter={filter} handleFilter={this.handleFilter}></Filter>
+        <Filter filter={filter} handleFilter={(e) => this.handleFilter('filter', e)} />
         <ContactList
           contacts={filteredContacts}
           handleDeleteContact={this.handleDeleteContact}
-        ></ContactList>
+        />
       </div>
     );
   }
